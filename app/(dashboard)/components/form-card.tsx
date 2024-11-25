@@ -56,14 +56,22 @@ export const FormCard = ({ form }: FormCardProps) => {
 
       <CardFooter>
         {form.published ? (
-          <Button asChild className='w-full mt-2 text-md gap-4'>
+          <Button
+            variant='secondary'
+            asChild
+            className='w-full mt-2 text-md gap-4'
+          >
             <Link href={`/forms/${form.id}`}>
               View submissions
               <ArrowRight />
             </Link>
           </Button>
         ) : (
-          <Button asChild className='w-full mt-2 text-md gap-4'>
+          <Button
+            variant='secondary'
+            asChild
+            className='w-full mt-2 text-md gap-4'
+          >
             <Link href={`/builder/${form.id}`}>
               Edit form
               <Edit />
