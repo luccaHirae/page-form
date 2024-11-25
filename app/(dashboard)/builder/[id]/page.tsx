@@ -1,4 +1,5 @@
 import { getFormById } from '@/actions/form';
+import { FormBuilder } from '@/components/form-builder';
 
 interface BuilderPageProps {
   params: {
@@ -11,11 +12,5 @@ export default async function BuilderPage({ params }: BuilderPageProps) {
 
   if (!form) throw new Error('Form not found.');
 
-  return (
-    <div>
-      <h1>Builder page</h1>
-
-      <p>Form name: {form.name}</p>
-    </div>
-  );
+  return <FormBuilder form={form} />;
 }
