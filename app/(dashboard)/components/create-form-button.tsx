@@ -1,9 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoaderCircle } from 'lucide-react';
+import { FileDiff, LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -30,6 +31,7 @@ import { type FormValues } from '@/types';
 
 export const CreateFormButton = () => {
   const { toast } = useToast();
+  const { push } = useRouter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -41,7 +43,9 @@ export const CreateFormButton = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await createForm(values);
+      const formId = await createForm(values);
+
+      push(`/builder/${formId}`);
 
       toast({
         title: 'Success',
@@ -63,7 +67,15 @@ export const CreateFormButton = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create new form</Button>
+        <Button
+          variant='outline'
+          className='group border border-primary/20 h-[190px] flex items-center justify-center flex-col hover:border-primary hover:cursor-pointer border-dashed gap-4'
+        >
+          <FileDiff className='!size-8 text-muted-foreground group-hover:text-primary' />
+          <p className='font-bold text-xl text-muted-foreground group-hover:text-primary'>
+            Create new form
+          </p>
+        </Button>
       </DialogTrigger>
 
       <DialogContent>
