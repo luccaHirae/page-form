@@ -1,6 +1,5 @@
 'use client';
 
-import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,13 +24,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-
-const formSchema = z.object({
-  name: z.string().min(3).max(255),
-  description: z.string().max(1024).optional(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { formSchema } from '@/schemas';
+import { createForm } from '@/actions/form';
+import { type FormValues } from '@/types';
 
 export const CreateFormButton = () => {
   const { toast } = useToast();
@@ -44,9 +39,14 @@ export const CreateFormButton = () => {
     },
   });
 
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = async (values: FormValues) => {
     try {
-      console.log(values);
+      await createForm(values);
+
+      toast({
+        title: 'Success',
+        description: 'Form created successfully.',
+      });
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
