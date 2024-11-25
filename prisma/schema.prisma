@@ -31,6 +31,8 @@ model Form {
   shareUrl String @default(uuid())
 
   FormSubmission FormSubmission[]
+
+  @@unique([userId, name]) // A user can't have two forms with the same name
 }
 
 model FormSubmission {
