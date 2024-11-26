@@ -6,6 +6,7 @@ import { FormElementInstace } from '@/components/form-elements';
 type DesignerContextType = {
   elements: FormElementInstace[];
   addElement: (index: number, element: FormElementInstace) => void;
+  removeElement: (id: string) => void;
 };
 
 export const DesignerContext = createContext<DesignerContextType | null>(null);
@@ -25,9 +26,14 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
     });
   };
 
+  const removeElement = (id: string) => {
+    setElements((prev) => prev.filter((element) => element.id !== id));
+  };
+
   const value = {
     elements,
     addElement,
+    removeElement,
   };
 
   return (

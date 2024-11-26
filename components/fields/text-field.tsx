@@ -1,27 +1,63 @@
 'use client';
 
-import { ElementsType, FormElement } from '@/components/form-elements';
 import { Text } from 'lucide-react';
+import {
+  ElementsType,
+  FormElement,
+  FormElementInstace,
+} from '@/components/form-elements';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 const type: ElementsType = 'TextField';
+
+const extraAttributes = {
+  label: 'Text Field',
+  helperText: 'This is a text field',
+  required: false,
+  placeholder: 'Enter text here',
+};
 
 export const TextFieldFormElement: FormElement = {
   type,
   construct: (id: string) => ({
     id,
     type,
-    extraAttributes: {
-      label: 'Text Field',
-      helperText: 'This is a text field',
-      required: false,
-      placeholder: 'Enter text here',
-    },
+    extraAttributes,
   }),
   designerButtonElement: {
     icon: Text,
     label: 'Text Field',
   },
-  designerComponent: () => <div>Designer component</div>,
+  designerComponent: DesignerComponent,
   formComponent: () => <div>Form component</div>,
   propertiesComponent: () => <div>Properties component</div>,
 };
+
+type CustomInstance = FormElementInstace & {
+  extraAttributes: typeof extraAttributes;
+};
+
+interface DesignerComponentProps {
+  elementInstance: FormElementInstace;
+}
+
+function DesignerComponent({ elementInstance }: DesignerComponentProps) {
+  const element = elementInstance as CustomInstance;
+  const { label, helperText, required, placeholder } = element.extraAttributes;
+
+  return (
+    <div className='flex flex-col gap-2 w-full'>
+      <Label>
+        {label}
+        {required && '*'}
+      </Label>
+
+      <Input readOnly disabled placeholder={placeholder} />
+
+      {helperText && (
+        <p className='text-muted-foreground text-[0.8rem]'>{helperText}</p>
+      )}
+    </div>
+  );
+}
