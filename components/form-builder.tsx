@@ -1,6 +1,12 @@
 'use client';
 
-import { DndContext } from '@dnd-kit/core';
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
 import { PreviewDialogButton } from '@/components/preview-dialog-button';
 import { SaveFormButton } from '@/components/save-form-button';
 import { PublishFormButton } from '@/components/publish-form-button';
@@ -13,8 +19,24 @@ interface FormBuilderProps {
 }
 
 export const FormBuilder = ({ form }: FormBuilderProps) => {
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      // Only start the drag if the user has moved the pointer by 10 pixels
+      distance: 10,
+    },
+  });
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 300,
+      tolerance: 5,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
+
   return (
-    <DndContext>
+    <DndContext sensors={sensors}>
       <main className='flex flex-col w-full'>
         <nav className='flex justify-between items-center border-b-2 p-4 gap-3'>
           <h2 className='truncate font-medium'>
