@@ -5,7 +5,10 @@ import { FormElementInstace } from '@/components/form-elements';
 
 type DesignerContextType = {
   elements: FormElementInstace[];
+  setElements: Dispatch<SetStateAction<FormElementInstace[]>>;
   addElement: (index: number, element: FormElementInstace) => void;
+  isLoaded: boolean;
+  setIsLoaded: Dispatch<SetStateAction<boolean>>;
   removeElement: (id: string) => void;
   selectedElement: FormElementInstace | null;
   setSelectedElement: Dispatch<SetStateAction<FormElementInstace | null>>;
@@ -22,6 +25,7 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
   const [elements, setElements] = useState<FormElementInstace[]>([]);
   const [selectedElement, setSelectedElement] =
     useState<FormElementInstace | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const addElement = (index: number, element: FormElementInstace) => {
     setElements((prev) => {
@@ -43,6 +47,9 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
 
   const value = {
     elements,
+    setElements,
+    isLoaded,
+    setIsLoaded,
     addElement,
     removeElement,
     selectedElement,

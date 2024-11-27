@@ -46,7 +46,7 @@ export const TextFieldFormElement: FormElement = {
     label: 'Text Field',
   },
   designerComponent: DesignerComponent,
-  formComponent: () => <div>Form component</div>,
+  formComponent: FormComponent,
   propertiesComponent: PropertiesComponent,
 };
 
@@ -54,11 +54,11 @@ type CustomInstance = FormElementInstace & {
   extraAttributes: typeof extraAttributes;
 };
 
-interface DesignerComponentProps {
+interface TextFieldProps {
   elementInstance: FormElementInstace;
 }
 
-function DesignerComponent({ elementInstance }: DesignerComponentProps) {
+function DesignerComponent({ elementInstance }: TextFieldProps) {
   const element = elementInstance as CustomInstance;
   const { label, helperText, required, placeholder } = element.extraAttributes;
 
@@ -66,7 +66,7 @@ function DesignerComponent({ elementInstance }: DesignerComponentProps) {
     <div className='flex flex-col gap-2 w-full'>
       <Label>
         {label}
-        {required && '*'}
+        {required && ' *'}
       </Label>
 
       <Input readOnly disabled placeholder={placeholder} />
@@ -78,13 +78,29 @@ function DesignerComponent({ elementInstance }: DesignerComponentProps) {
   );
 }
 
-interface PropertiesComponentProps {
-  elementInstance: FormElementInstace;
+function FormComponent({ elementInstance }: TextFieldProps) {
+  const element = elementInstance as CustomInstance;
+  const { label, helperText, required, placeholder } = element.extraAttributes;
+
+  return (
+    <div className='flex flex-col gap-2 w-full'>
+      <Label>
+        {label}
+        {required && ' *'}
+      </Label>
+
+      <Input placeholder={placeholder} />
+
+      {helperText && (
+        <p className='text-muted-foreground text-[0.8rem]'>{helperText}</p>
+      )}
+    </div>
+  );
 }
 
 type formPropertiesType = z.infer<typeof propertiesSchema>;
 
-function PropertiesComponent({ elementInstance }: PropertiesComponentProps) {
+function PropertiesComponent({ elementInstance }: TextFieldProps) {
   const { updateElement } = useDesigner();
 
   const element = elementInstance as CustomInstance;
