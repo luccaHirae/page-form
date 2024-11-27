@@ -8,7 +8,8 @@ import { DesignerElementWrapper } from '@/components/designer-element-wrapper';
 import { cn, generateId } from '@/lib/utils';
 
 export const Designer = () => {
-  const { elements, addElement } = useDesigner();
+  const { elements, addElement, selectedElement, setSelectedElement } =
+    useDesigner();
 
   const droppable = useDroppable({
     id: 'designer-drop-area',
@@ -37,9 +38,13 @@ export const Designer = () => {
     },
   });
 
+  const handleUnselectElement = () => {
+    if (selectedElement) setSelectedElement(null);
+  };
+
   return (
     <div className='flex w-full h-full'>
-      <div className='p-4 w-full'>
+      <div onClick={handleUnselectElement} className='p-4 w-full'>
         <div
           ref={droppable.setNodeRef}
           className={cn(

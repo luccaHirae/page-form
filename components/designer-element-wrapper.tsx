@@ -13,7 +13,7 @@ interface DesignerElementWrapperProps {
 export const DesignerElementWrapper = ({
   element,
 }: DesignerElementWrapperProps) => {
-  const { removeElement } = useDesigner();
+  const { removeElement, setSelectedElement } = useDesigner();
 
   const [isMouseOver, setIsMouseOver] = useState(false);
 
@@ -44,8 +44,14 @@ export const DesignerElementWrapper = ({
     },
   });
 
-  const handleClick = () => {
+  const handleDeleteElement = (e: React.MouseEvent) => {
+    e.stopPropagation();
     removeElement(element.id);
+  };
+
+  const handleSelectElement = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedElement(element);
   };
 
   // Don't render the element if it's being dragged
@@ -60,6 +66,7 @@ export const DesignerElementWrapper = ({
       {...draggable.attributes}
       onMouseEnter={() => setIsMouseOver(true)}
       onMouseLeave={() => setIsMouseOver(false)}
+      onClick={handleSelectElement}
       className='relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-accent ring-inset'
     >
       <div
@@ -75,7 +82,7 @@ export const DesignerElementWrapper = ({
         <>
           <div className='absolute right-0 h-full'>
             <Button
-              onClick={handleClick}
+              onClick={handleDeleteElement}
               variant='outline'
               className='flex justify-center h-full border rounded-md rounded-l-none bg-red-500'
             >
