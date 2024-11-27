@@ -49,7 +49,7 @@ export const FormBuilder = ({ form }: FormBuilderProps) => {
 
             {!form.published && (
               <>
-                <SaveFormButton />
+                <SaveFormButton formId={form.id} />
                 <PublishFormButton />
               </>
             )}
