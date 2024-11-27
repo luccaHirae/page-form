@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Confetti from 'react-confetti';
 import { useEffect } from 'react';
 import {
   DndContext,
@@ -65,6 +66,12 @@ export const FormBuilder = ({ form }: FormBuilderProps) => {
   if (form.published) {
     return (
       <>
+        <Confetti
+          recycle={false}
+          width={window.innerWidth}
+          height={window.innerHeight}
+        />
+
         <div className='flex flex-col items-center justify-center h-full w-full'>
           <div className='max-w-md'>
             <h1 className='text-center text-4xl font-bold text-primary border-b pb-2 mb-10'>
