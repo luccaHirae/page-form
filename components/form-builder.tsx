@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import {
   DndContext,
   MouseSensor,
@@ -12,6 +13,7 @@ import { SaveFormButton } from '@/components/save-form-button';
 import { PublishFormButton } from '@/components/publish-form-button';
 import { Designer } from '@/components/designer';
 import { DragOverlayWrapper } from '@/components/drag-overlay-wrapper';
+import { useDesigner } from '@/hooks/use-designer';
 import { type Form } from '@prisma/client';
 
 interface FormBuilderProps {
@@ -19,6 +21,8 @@ interface FormBuilderProps {
 }
 
 export const FormBuilder = ({ form }: FormBuilderProps) => {
+  const { setElements, setIsLoaded } = useDesigner();
+
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       // Only start the drag if the user has moved the pointer by 10 pixels
@@ -34,6 +38,12 @@ export const FormBuilder = ({ form }: FormBuilderProps) => {
   });
 
   const sensors = useSensors(mouseSensor, touchSensor);
+
+  useEffect(() => {
+    const elements = JSON.parse(form.content);
+    setElements(elements);
+    setIsLoaded(true);
+  }, [form.content, setElements, setIsLoaded]);
 
   return (
     <DndContext sensors={sensors}>

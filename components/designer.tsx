@@ -1,6 +1,7 @@
 'use client';
 
 import { DragEndEvent, useDndMonitor, useDroppable } from '@dnd-kit/core';
+import { LoaderCircle } from 'lucide-react';
 import { DesignerSidebar } from '@/components/designer-sidebar';
 import { useDesigner } from '@/hooks/use-designer';
 import { ElementsType, FormElements } from '@/components/form-elements';
@@ -10,6 +11,7 @@ import { cn, generateId } from '@/lib/utils';
 export const Designer = () => {
   const {
     elements,
+    isLoaded,
     addElement,
     removeElement,
     selectedElement,
@@ -114,6 +116,11 @@ export const Designer = () => {
 
         const newElementIndex = overElementIndex;
 
+        // TODO: fix reordering when dropping over an empty drop area
+        // if (isDroppingOverDesignerElementBottomHalf) {
+        //   newElementIndex = overElementIndex + 1;
+        // }
+
         addElement(newElementIndex, activeElement);
       }
     },
@@ -122,6 +129,11 @@ export const Designer = () => {
   const handleUnselectElement = () => {
     if (selectedElement) setSelectedElement(null);
   };
+
+  const isDropAreaEmpty =
+    !droppable.isOver && elements.length === 0 && isLoaded;
+  const isDraggingOverEmptyDropArea =
+    droppable.isOver && elements.length === 0 && isLoaded;
 
   return (
     <div className='flex w-full h-full'>
@@ -133,13 +145,13 @@ export const Designer = () => {
             droppable.isOver && 'ring-2 ring-primary/20'
           )}
         >
-          {!droppable.isOver && elements.length === 0 && (
+          {isDropAreaEmpty && (
             <p className='text-3xl text-muted-foreground flex flex-grow items-center font-bold'>
               Drop here
             </p>
           )}
 
-          {droppable.isOver && elements.length === 0 && (
+          {isDraggingOverEmptyDropArea && (
             <div className='p-4 w-full'>
               <div className='h-[120px] rounded-md bg-primary/20'></div>
             </div>
@@ -150,6 +162,12 @@ export const Designer = () => {
               {elements.map((element) => (
                 <DesignerElementWrapper key={element.id} element={element} />
               ))}
+            </div>
+          )}
+
+          {!isLoaded && (
+            <div className='flex flex-col items-center justify-center w-full h-full'>
+              <LoaderCircle className='size-8 animate-spin' />
             </div>
           )}
         </div>
