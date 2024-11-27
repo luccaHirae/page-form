@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Active, DragOverlay, useDndMonitor } from '@dnd-kit/core';
+import { useDesigner } from '@/hooks/use-designer';
 import { SidebarButtonElementDragOverlay } from '@/components/sidebar-button-element';
 import { type ElementsType, FormElements } from '@/components/form-elements';
 
 export const DragOverlayWrapper = () => {
+  const { elements } = useDesigner();
+
   const [draggedItem, setDraggedItem] = useState<Active | null>(null);
 
   useDndMonitor({
@@ -29,6 +32,29 @@ export const DragOverlayWrapper = () => {
     const type = draggedItem?.data?.current?.type as ElementsType;
 
     node = <SidebarButtonElementDragOverlay formElement={FormElements[type]} />;
+  }
+
+  const isDesignerElement = draggedItem?.data?.current?.isDesignerElement;
+
+  if (isDesignerElement) {
+    const elementId = draggedItem?.data?.current?.elementId;
+
+    const element = elements.find((el) => el.id === elementId);
+
+    if (!element) node = <div>Element not found</div>;
+    else {
+      const DesignerElementComponent =
+        FormElements[element.type].designerComponent;
+
+      /* Pointer events none is necessary to prevent the drag overlay from sticking to the cursor
+       *  even after the drag is cancelled or ended
+       */
+      node = (
+        <div className='flex bg-accent border rounded-md h-[120px] w-full py-2 px-4 opacity-80 pointer-events-none'>
+          <DesignerElementComponent elementInstance={element} />
+        </div>
+      );
+    }
   }
 
   return <DragOverlay>{node}</DragOverlay>;

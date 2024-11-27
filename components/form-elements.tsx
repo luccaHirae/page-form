@@ -5,7 +5,7 @@ export type ElementsType = 'TextField';
 export type FormElementInstace = {
   id: string;
   type: ElementsType;
-  extraAttributes?: Record<string, unknown>;
+  extraAttributes?: Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 };
 
 export type FormElement = {
@@ -15,9 +15,13 @@ export type FormElement = {
     icon: React.ElementType;
     label: string;
   };
-  designerComponent: React.FC;
+  designerComponent: React.FC<{
+    elementInstance: FormElementInstace;
+  }>;
   formComponent: React.FC;
-  propertiesComponent: React.FC;
+  propertiesComponent: React.FC<{
+    elementInstance: FormElementInstace;
+  }>;
 };
 
 type FormElementsType = {
