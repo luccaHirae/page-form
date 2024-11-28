@@ -1,12 +1,23 @@
 import { SidebarButtonElement } from '@/components/sidebar-button-element';
 import { FormElements } from '@/components/form-elements';
+import { Separator } from '@/components/ui/separator';
 
 export const FormElementsSidebar = () => {
   return (
     <div>
-      <h2 className='text-lg text-muted-foreground font-bold'>Elements</h2>
+      <p className='text-sm text-foreground/70'>Drag and drop elements</p>
 
-      <SidebarButtonElement formElement={FormElements.TextField} />
+      <Separator className='my-2' />
+
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-2 place-items-center'>
+        <p className='text-sm text-muted-foreground col-span-1 md:col-span-2 my-2 place-self-start'>
+          Layout elements
+        </p>
+
+        <SidebarButtonElement formElement={FormElements.TextField} />
+
+        <SidebarButtonElement formElement={FormElements.TitleField} />
+      </div>
     </div>
   );
 };

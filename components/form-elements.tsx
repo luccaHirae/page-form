@@ -1,6 +1,7 @@
 import { TextFieldFormElement } from '@/components/fields/text-field';
+import { TitleFieldFormElement } from '@/components/fields/title-field';
 
-export type ElementsType = 'TextField';
+export type ElementsType = 'TextField' | 'TitleField';
 
 export type SubmitValue = (key: string, value: string) => void;
 
@@ -38,4 +39,5 @@ type FormElementsType = {
 
 export const FormElements: FormElementsType = {
   TextField: TextFieldFormElement,
+  TitleField: TitleFieldFormElement,
 };

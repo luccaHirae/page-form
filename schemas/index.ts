@@ -11,3 +11,7 @@ export const propertiesSchema = z.object({
   required: z.boolean().default(false),
   placeholder: z.string().max(50),
 });
+
+export const titlePropertiesSchema = z.object({
+  title: z.string().min(2).max(50),
+});
