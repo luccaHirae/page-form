@@ -17,7 +17,9 @@ interface FormsPageProps {
 }
 
 export default async function FormsPage({ params }: FormsPageProps) {
-  const form = await getFormById(Number(params?.id));
+  const { id } = await params; // await is needed here to avoid a warning
+
+  const form = await getFormById(Number(id));
 
   if (!form) throw new Error('Form not found.');
 
