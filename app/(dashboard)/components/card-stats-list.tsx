@@ -46,7 +46,7 @@ export const CardStatsList = ({ data, loading }: StatsCardListProps) => {
         title='Bounce rate'
         icon={<ArrowBigLeftDash className='text-red-600' />}
         helperText='Views without submissions'
-        value={`${data?.submissionRate.toLocaleString() ?? 0}%`}
+        value={`${data?.bounceRate.toLocaleString() ?? 0}%`}
         loading={loading}
         className='shadow-md shadow-red-600'
       />
