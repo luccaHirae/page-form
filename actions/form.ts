@@ -163,3 +163,23 @@ export const submitForm = async (formUrl: string, formContent: string) => {
     },
   });
 };
+
+export const getFormWithSubmissions = async (formId: number) => {
+  const user = await currentUser();
+
+  if (!user) throw new UserNotFoundError();
+
+  return await prisma.form.findUnique({
+    where: {
+      id: formId,
+      userId: user.id,
+    },
+    include: {
+      FormSubmission: {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
+    },
+  });
+};
