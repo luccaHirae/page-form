@@ -14,9 +14,15 @@ export const FormElementsSidebar = () => {
           Layout elements
         </p>
 
-        <SidebarButtonElement formElement={FormElements.TextField} />
-
         <SidebarButtonElement formElement={FormElements.TitleField} />
+
+        <SidebarButtonElement formElement={FormElements.SubtitleField} />
+
+        <p className='text-sm text-muted-foreground col-span-1 md:col-span-2 my-2 place-self-start'>
+          Form elements
+        </p>
+
+        <SidebarButtonElement formElement={FormElements.TextField} />
       </div>
     </div>
   );
