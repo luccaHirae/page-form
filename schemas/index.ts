@@ -19,3 +19,7 @@ export const titlePropertiesSchema = z.object({
 export const paragraphPropertiesSchema = z.object({
   text: z.string().min(2).max(500),
 });
+
+export const spacerPropertiesSchema = z.object({
+  height: z.number().min(5).max(200),
+});
