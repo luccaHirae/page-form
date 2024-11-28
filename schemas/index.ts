@@ -15,3 +15,7 @@ export const propertiesSchema = z.object({
 export const titlePropertiesSchema = z.object({
   title: z.string().min(2).max(50),
 });
+
+export const paragraphPropertiesSchema = z.object({
+  text: z.string().min(2).max(500),
+});
