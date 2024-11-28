@@ -36,7 +36,7 @@ export const FormCard = ({ form }: FormCardProps) => {
             addSuffix: true,
           })}
 
-          {!form.published && (
+          {form.published && (
             <span className='flex items-center gap-2'>
               <View className='size-4 text-muted-foreground' />
               <span title='views'>{form.views.toLocaleString()}</span>
