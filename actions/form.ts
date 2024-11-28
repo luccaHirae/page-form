@@ -149,6 +149,7 @@ export const submitForm = async (formUrl: string, formContent: string) => {
   return await prisma.form.update({
     where: {
       shareUrl: formUrl,
+      published: true,
     },
     data: {
       submissions: {
