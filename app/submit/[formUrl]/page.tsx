@@ -9,11 +9,13 @@ interface SubmitPageProps {
 }
 
 export default async function SubmitPage({ params }: SubmitPageProps) {
-  const form = await getFormByUrl(params?.formUrl);
+  const { formUrl } = await params;
+
+  const form = await getFormByUrl(formUrl);
 
   if (!form) throw new Error('Form not found.');
 
   const formContent = JSON.parse(form.content) as FormElementInstace[];
 
-  return <FormSubmit formUrl={params.formUrl} formContent={formContent} />;
+  return <FormSubmit formUrl={formUrl} formContent={formContent} />;
 }

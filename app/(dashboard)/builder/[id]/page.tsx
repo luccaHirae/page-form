@@ -8,7 +8,9 @@ interface BuilderPageProps {
 }
 
 export default async function BuilderPage({ params }: BuilderPageProps) {
-  const form = await getFormById(Number(params?.id));
+  const { id } = await params;
+
+  const form = await getFormById(Number(id));
 
   if (!form) throw new Error('Form not found.');
 
