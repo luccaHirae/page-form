@@ -11,3 +11,15 @@ export const propertiesSchema = z.object({
   required: z.boolean().default(false),
   placeholder: z.string().max(50),
 });
+
+export const titlePropertiesSchema = z.object({
+  title: z.string().min(2).max(50),
+});
+
+export const paragraphPropertiesSchema = z.object({
+  text: z.string().min(2).max(500),
+});
+
+export const spacerPropertiesSchema = z.object({
+  height: z.number().min(5).max(200),
+});

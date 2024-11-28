@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Text } from 'lucide-react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import {
   ElementsType,
   FormElement,
   FormElementInstace,
+  SubmitValue,
 } from '@/components/form-elements';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -24,6 +25,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
+import { cn } from '@/lib/utils';
 
 const type: ElementsType = 'TextField';
 
@@ -48,6 +50,18 @@ export const TextFieldFormElement: FormElement = {
   designerComponent: DesignerComponent,
   formComponent: FormComponent,
   propertiesComponent: PropertiesComponent,
+  validate: (
+    formElement: FormElementInstace,
+    currentValue: string
+  ): boolean => {
+    const element = formElement as CustomInstance;
+
+    if (element.extraAttributes.required) {
+      return currentValue.trim().length > 0;
+    }
+
+    return true;
+  },
 };
 
 type CustomInstance = FormElementInstace & {
@@ -78,21 +92,76 @@ function DesignerComponent({ elementInstance }: TextFieldProps) {
   );
 }
 
-function FormComponent({ elementInstance }: TextFieldProps) {
+interface FormTextFieldProps {
+  elementInstance: FormElementInstace;
+  submitValue?: SubmitValue;
+  isInvalid?: boolean;
+  defaultValue?: string;
+}
+
+function FormComponent({
+  elementInstance,
+  submitValue,
+  isInvalid,
+  defaultValue,
+}: FormTextFieldProps) {
   const element = elementInstance as CustomInstance;
   const { label, helperText, required, placeholder } = element.extraAttributes;
 
+  const [value, setValue] = useState(defaultValue ?? '');
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setError(isInvalid === true);
+  }, [isInvalid]);
+
+  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isValid = TextFieldFormElement.validate(element, e.target.value);
+
+    if (isValid) {
+      setError(false);
+    }
+
+    setValue(e.target.value);
+  };
+
+  const handleValueBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const isValid = TextFieldFormElement.validate(element, e.target.value);
+
+    if (!isValid) {
+      setError(true);
+      return;
+    }
+
+    if (submitValue) {
+      submitValue(element.id, e.target.value);
+    }
+  };
+
   return (
     <div className='flex flex-col gap-2 w-full'>
-      <Label>
+      <Label className={cn(error && 'text-red-500')}>
         {label}
         {required && ' *'}
       </Label>
 
-      <Input placeholder={placeholder} />
+      <Input
+        placeholder={placeholder}
+        value={value}
+        onChange={handleValueChange}
+        onBlur={handleValueBlur}
+        className={cn(error && 'border-red-500')}
+      />
 
       {helperText && (
-        <p className='text-muted-foreground text-[0.8rem]'>{helperText}</p>
+        <p
+          className={cn(
+            'text-muted-foreground text-[0.8rem]',
+            error && 'text-red-500'
+          )}
+        >
+          {helperText}
+        </p>
       )}
     </div>
   );

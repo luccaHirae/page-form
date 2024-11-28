@@ -128,3 +128,58 @@ export const publishForm = async (id: number) => {
     },
   });
 };
+
+export const getFormByUrl = async (formUrl: string) => {
+  return await prisma.form.update({
+    where: {
+      shareUrl: formUrl,
+    },
+    select: {
+      content: true,
+    },
+    data: {
+      views: {
+        increment: 1,
+      },
+    },
+  });
+};
+
+export const submitForm = async (formUrl: string, formContent: string) => {
+  return await prisma.form.update({
+    where: {
+      shareUrl: formUrl,
+      published: true,
+    },
+    data: {
+      submissions: {
+        increment: 1,
+      },
+      FormSubmission: {
+        create: {
+          content: formContent,
+        },
+      },
+    },
+  });
+};
+
+export const getFormWithSubmissions = async (formId: number) => {
+  const user = await currentUser();
+
+  if (!user) throw new UserNotFoundError();
+
+  return await prisma.form.findUnique({
+    where: {
+      id: formId,
+      userId: user.id,
+    },
+    include: {
+      FormSubmission: {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
+    },
+  });
+};
