@@ -27,3 +27,7 @@ export const spacerPropertiesSchema = z.object({
 export const textAreaPropertiesSchema = propertiesSchema.extend({
   rows: z.number().min(1).max(10),
 });
+
+export const datePropertiesSchema = propertiesSchema.omit({
+  placeholder: true,
+});
