@@ -31,3 +31,7 @@ export const textAreaPropertiesSchema = propertiesSchema.extend({
 export const datePropertiesSchema = propertiesSchema.omit({
   placeholder: true,
 });
+
+export const selectPropertiesSchema = propertiesSchema.extend({
+  options: z.array(z.string()).default([]),
+});
