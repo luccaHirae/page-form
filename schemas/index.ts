@@ -23,3 +23,15 @@ export const paragraphPropertiesSchema = z.object({
 export const spacerPropertiesSchema = z.object({
   height: z.number().min(5).max(200),
 });
+
+export const textAreaPropertiesSchema = propertiesSchema.extend({
+  rows: z.number().min(1).max(10),
+});
+
+export const datePropertiesSchema = propertiesSchema.omit({
+  placeholder: true,
+});
+
+export const selectPropertiesSchema = propertiesSchema.extend({
+  options: z.array(z.string()).default([]),
+});
