@@ -27,7 +27,7 @@ interface FormBuilderProps {
 }
 
 export const FormBuilder = ({ form }: FormBuilderProps) => {
-  const { setElements, setIsLoaded } = useDesigner();
+  const { setElements, setIsLoaded, setSelectedElement } = useDesigner();
   const { toast } = useToast();
 
   const mouseSensor = useSensor(MouseSensor, {
@@ -49,8 +49,9 @@ export const FormBuilder = ({ form }: FormBuilderProps) => {
   useEffect(() => {
     const elements = JSON.parse(form.content);
     setElements(elements);
+    setSelectedElement(null);
     setIsLoaded(true);
-  }, [form.content, setElements, setIsLoaded]);
+  }, [form.content, setElements, setIsLoaded, setSelectedElement]);
 
   const shareUrl = `${window.location.origin}/submit/${form.shareUrl}`;
 
@@ -134,7 +135,7 @@ export const FormBuilder = ({ form }: FormBuilderProps) => {
           </div>
         </nav>
 
-        <div className='flex w-full flex-grow items-center justify-center relative overflow-y-auto h-[200px] bg-accent bg-[url(/graph-paper.svg)] bg-[url(/graph-paper-dark.svg)]'>
+        <div className='flex w-full flex-grow items-center justify-center relative overflow-y-auto h-[200px] bg-accent bg-[url(/graph-paper.svg)] dark:bg-[url(/graph-paper-dark.svg)]'>
           <Designer />
         </div>
       </main>
