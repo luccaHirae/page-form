@@ -23,3 +23,7 @@ export const paragraphPropertiesSchema = z.object({
 export const spacerPropertiesSchema = z.object({
   height: z.number().min(5).max(200),
 });
+
+export const textAreaPropertiesSchema = propertiesSchema.extend({
+  rows: z.number().min(1).max(10),
+});
