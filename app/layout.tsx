@@ -29,11 +29,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html
+      lang='en'
+      suppressHydrationWarning={process.env.NODE_ENV === 'production'}
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextTopLoader />
+        <NextTopLoader showSpinner={false} />
 
         <ClerkProvider>
           <DesignerProvider>
