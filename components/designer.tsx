@@ -114,14 +114,40 @@ export const Designer = () => {
 
         removeElement(activeElement.id);
 
-        const newElementIndex = overElementIndex;
+        let newElementIndex = overElementIndex;
 
         // TODO: fix reordering when dropping over an empty drop area
-        // if (isDroppingOverDesignerElementBottomHalf) {
-        //   newElementIndex = overElementIndex + 1;
-        // }
+        if (isDroppingOverDesignerElementBottomHalf) {
+          newElementIndex = overElementIndex + 1;
+        }
+
+        if (activeElementIndex < overElementIndex) {
+          newElementIndex -= 1;
+        }
 
         addElement(newElementIndex, activeElement);
+
+        return;
+      }
+
+      // Fourth scenario: dropping an element from the drop area over empty drop area
+      const isDraggingDesignerElementOverEmptyDropArea =
+        isDroppingOverDesignerDropArea && isDraggingDesignerElement;
+
+      if (isDraggingDesignerElementOverEmptyDropArea) {
+        const activeId = active?.data?.current?.elementId;
+        const activeElementIndex = elements.findIndex(
+          (el) => el.id === activeId
+        );
+
+        if (activeElementIndex === -1) {
+          throw new Error('Element not found');
+        }
+
+        const activeElement = { ...elements[activeElementIndex] };
+
+        removeElement(activeElement.id);
+        addElement(elements.length, activeElement);
       }
     },
   });
