@@ -1,18 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { LaptopIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
-
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
-
-  if (!mounted) return null; // Avoiding hydration mismatch
 
   return (
     <Tabs defaultValue={theme}>
